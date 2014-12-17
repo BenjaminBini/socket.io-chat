@@ -1,6 +1,6 @@
 # Socket.io : Chat
 
-Cette application reprend les sources [du tutoriel](http://blog.bini.io/developper-une-application-avec-socket-io/) présent sur le blog [bini.io](http://blog.bini.io).
+Cette application reprend les sources du [tutoriel](http://blog.bini.io/developper-une-application-avec-socket-io/) présent sur le blog [bini.io](http://blog.bini.io), qui est lui même une adaptation du [tutoriel officiel](http://socket.io/get-started/chat/) de socket.io.
 
 ## Installation
 
