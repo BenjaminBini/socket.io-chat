@@ -37,3 +37,10 @@ $('#chat form').submit(function (e) {
 socket.on('chat-message', function (message) {
   $('#messages').append($('<li>').text(message.username + ' - ' + message.text));
 });
+
+/**
+ * Réception d'un message de service
+ */
+socket.on('service-message', function (message) {
+  $('#messages').append($('<li class="' + message.type + '">').text('INFO : ' + message.text));
+});
