@@ -6,11 +6,19 @@
     <style>
     </style>
   </head>
-  <body>
+  <body id="logged-out">
     <section id="chat">
       <ul id="messages"></ul>
       <form action="">
         <input id="m" autocomplete="off" /><button>Send</button>
+      </form>
+    </section>
+    <section id="login">
+      <form action="">
+        <input id="u" autocomplete="off" autofocus />
+        <p>
+          <button>Login</button>
+        </p>
       </form>
     </section>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>

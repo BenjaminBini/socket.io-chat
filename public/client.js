@@ -2,6 +2,17 @@
 var socket = io();
 
 /**
+ * Connexion
+ */
+$('#login form').submit(function (e) {
+  e.preventDefault();
+  if ($('#login input').val().trim().length > 0) { // Si le champ de connexion n'est pas vide
+    $('body').removeAttr('id'); // Cache formulaire de connexion
+    $('#chat input').focus(); // Focus sur le champ du message
+  }
+});
+
+/**
  * Envoi d'un message
  */
 $('#chat form').submit(function (e) {
