@@ -23,7 +23,7 @@ io.on('connection', function (socket) {
     if (loggedUser !== undefined) {
       console.log('user disconnected : ' + loggedUser.username);
       var serviceMessage = {
-        text: 'User "' + loggedUser.username + ' disconnected',
+        text: 'User "' + loggedUser.username + '" disconnected',
         type: 'logout'
       };
       socket.broadcast.emit('service-message', serviceMessage);
@@ -37,7 +37,7 @@ io.on('connection', function (socket) {
     loggedUser = user;
     if (loggedUser !== undefined) {
       var serviceMessage = {
-        text: 'User "' + loggedUser.username + ' logged in',
+        text: 'User "' + loggedUser.username + '" logged in',
         type: 'login'
       };
       socket.broadcast.emit('service-message', serviceMessage);
