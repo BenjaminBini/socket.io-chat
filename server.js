@@ -11,6 +11,11 @@ app.use("/", express.static(__dirname + "/public"));
 io.on('connection', function (socket) {
 
   /**
+   * Utilisateur connecté à la socket
+   */
+  var loggedUser;
+
+  /**
    * Log de connexion et de déconnexion des utilisateurs
    */
   console.log('a user connected');
@@ -19,10 +24,20 @@ io.on('connection', function (socket) {
   });
 
   /**
+   * Connexion d'un utilisateur via le formulaire
+   */
+  socket.on('user-login', function (user) {
+    loggedUser = user;
+    console.log('user logged in : ' + loggedUser.username);
+  });
+
+  /**
    * Réception de l'événement 'chat-message' et réémission vers tous les utilisateurs
    */
   socket.on('chat-message', function (message) {
+    message.username = loggedUser.username;
     io.emit('chat-message', message);
+    console.log('Message de : ' + loggedUser.username);
   });
 });
 

@@ -2,11 +2,15 @@
 var socket = io();
 
 /**
- * Connexion
+ * Connexion d'un utilisateur
  */
 $('#login form').submit(function (e) {
   e.preventDefault();
-  if ($('#login input').val().trim().length > 0) { // Si le champ de connexion n'est pas vide
+  var user = {
+    username : $('#login input').val().trim()
+  };
+  if (user.username.length > 0) { // Si le champ de connexion n'est pas vide
+    socket.emit('user-login', user);
     $('body').removeAttr('id'); // Cache formulaire de connexion
     $('#chat input').focus(); // Focus sur le champ du message
   }
@@ -31,5 +35,5 @@ $('#chat form').submit(function (e) {
  * Réception d'un message
  */
 socket.on('chat-message', function (message) {
-  $('#messages').append($('<li>').text(message.text));
+  $('#messages').append($('<li>').text(message.username + ' - ' + message.text));
 });
