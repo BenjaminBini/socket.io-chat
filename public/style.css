@@ -45,24 +45,29 @@ section#chat form button {
     font-size: 17px;
     color: white;
 }
-#messages {
+section#chat #messages {
     list-style-type: none;
     margin: 0;
     padding: 0;
 }
-#messages li {
+section#chat #messages li {
     padding: 5px 10px;
 }
-#messages li:nth-child(odd) {
+section#chat #messages li:nth-child(odd) {
     background: #eee;
 }
-#messages li.logout {
+section#chat #messages li.logout {
 	background: #E5A6A6;
 }
-#messages li.login {
+section#chat #messages li.login {
 	background: #A8E5A6;
 }
-
+section#chat #messages li span.username {
+	display: inline-block;
+	padding: 6px 10px;
+	color: white;
+	background: #e67e22;
+}
 section#login {
     transition: all 0.5s;
     opacity: 0;

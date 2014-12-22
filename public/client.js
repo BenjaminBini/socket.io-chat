@@ -35,7 +35,7 @@ $('#chat form').submit(function (e) {
  * Réception d'un message
  */
 socket.on('chat-message', function (message) {
-  $('#messages').append($('<li>').text(message.username + ' - ' + message.text));
+  $('#messages').append($('<li>').html('<span class="username">' + message.username + '</span> ' + message.text));
 });
 
 /**
