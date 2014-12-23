@@ -5,7 +5,6 @@ Cette application reprend les sources du [tutoriel](http://blog.bini.io/developp
 Cette version ajoute les fonctionnalités suivantes par rapport à la version du tutoriel officiel :
 
 * Support des noms d'utilisateurs
-* Affichage de la liste des utilisateurs connectés
 * Affichage d'un message lors de la connexion/déconnexion d'un utilisateur
 
 ## Installation
