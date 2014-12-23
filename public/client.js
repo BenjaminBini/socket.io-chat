@@ -42,5 +42,5 @@ socket.on('chat-message', function (message) {
  * Réception d'un message de service
  */
 socket.on('service-message', function (message) {
-  $('#messages').append($('<li class="' + message.type + '">').text('INFO : ' + message.text));
+  $('#messages').append($('<li class="' + message.type + '">').html('<span class="info">information</span> ' + message.text));
 });

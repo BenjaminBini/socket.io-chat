@@ -67,6 +67,14 @@ section#chat #messages li span.username {
 	padding: 6px 10px;
 	color: white;
 	background: #e67e22;
+	border-radius: 5px;
+}
+section#chat #messages li span.info {
+	display: inline-block;
+	padding: 3px 10px;
+	color: white;
+	background: #e67e22;
+	border-radius: 5px;
 }
 section#login {
     transition: all 0.5s;
