@@ -16,9 +16,13 @@ io.on('connection', function (socket) {
   var loggedUser;
 
   /**
-   * Log de connexion et de déconnexion des utilisateurs
+   * Log de connexion d'un utilisateur (avant login)
    */
   console.log('a user connected');
+
+  /**
+   * Déconnexion d'un utilisateur : broadcast d'un 'service-message'
+   */
   socket.on('disconnect', function () {
     if (loggedUser !== undefined) {
       console.log('user disconnected : ' + loggedUser.username);
@@ -31,7 +35,9 @@ io.on('connection', function (socket) {
   });
 
   /**
-   * Connexion d'un utilisateur via le formulaire
+   * Connexion d'un utilisateur via le formulaire :
+   *  - sauvegarde du user
+   *  - broadcast d'un 'service-message'
    */
   socket.on('user-login', function (user) {
     loggedUser = user;
