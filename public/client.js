@@ -1,5 +1,19 @@
 /*global io*/
+/*jslint browser: true*/
 var socket = io();
+
+/*** Fonctions utiles ***/
+
+/**
+ * Scroll vers le bas de page si l'utilisateur n'est pas remonté pour lire d'anciens messages
+ */
+function scrollToBottom() {
+  if ($(window).scrollTop() + $(window).height() + 2 * $('#messages li').last().outerHeight() >= $(document).height()) {
+    $("html, body").animate({ scrollTop: $(document).height() }, 0);
+  }
+}
+
+/*** Gestion des événements ***/
 
 /**
  * Connexion d'un utilisateur
@@ -36,6 +50,7 @@ $('#chat form').submit(function (e) {
  */
 socket.on('chat-message', function (message) {
   $('#messages').append($('<li>').html('<span class="username">' + message.username + '</span> ' + message.text));
+  scrollToBottom();
 });
 
 /**
@@ -43,4 +58,5 @@ socket.on('chat-message', function (message) {
  */
 socket.on('service-message', function (message) {
   $('#messages').append($('<li class="' + message.type + '">').html('<span class="info">information</span> ' + message.text));
+  scrollToBottom();
 });
