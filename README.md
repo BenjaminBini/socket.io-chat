@@ -11,6 +11,10 @@ Cette version ajoute les fonctionnalités suivantes par rapport à la version du
 
 * Support des noms d'utilisateurs
 * Affichage d'un message lors de la connexion/déconnexion d'un utilisateur
+* Affichage de la liste des utilisateurs connectés
+* Conservation d'un historique des messages
+* Affichage du texte "typing" à côté du nom des utilisateurs en train de saisir un message
+
 
 ## Installation
 
@@ -20,6 +24,7 @@ npm install
 ```
 
 ## Démarrer l'application
+
 Pour démarrer l'application, exécutez la commande suivante depuis la racine du projet.
 ```
 node server
