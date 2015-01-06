@@ -3,6 +3,9 @@
     padding: 0;
     box-sizing: border-box;
 }
+html, body, head {
+    height: 100%;
+}
 body {
     font: 13px Helvetica, Arial;
     transition: all 0.5s;
@@ -18,7 +21,9 @@ body#logged-out section#chat {
 body#logged-out section#login {
     opacity: 1;
 }
-
+section#chat {
+    height: 100%;
+}
 section#chat form {
     background: #000;
     padding: 3px;
@@ -47,6 +52,8 @@ section#chat form button {
 }
 section#chat #messages {
     list-style-type: none;
+    display: inline-block;
+    width: calc(100% - 250px);
     margin: 0;
     padding: 0;
     padding-bottom: 50px;
@@ -78,6 +85,29 @@ section#chat #messages li span.info {
 	color: white;
 	background: #e67e22;
 	border-radius: 5px;
+}
+section#chat #users {
+    display: inline-block;
+    position: fixed;
+    vertical-align: top;
+    overflow: auto;
+    width: 250px;
+    list-style-type: none;
+    height: 100%;
+    padding-bottom: 50px;
+    border-left: 3px solid #eee;
+}
+section#chat #users li.new {
+    background: #e67e22;
+    color: white;
+}
+section#chat #users li {
+    padding: 6px 10px;
+    margin: 10px 10px;
+    border-radius: 5px;
+    border: 1px solid #e67e22;
+    color: black;
+    transition: all 0.5s;
 }
 section#login {
     transition: all 0.5s;

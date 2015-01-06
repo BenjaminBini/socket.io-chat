@@ -9,14 +9,15 @@ var socket = io();
  */
 function scrollToBottom() {
   if ($(window).scrollTop() + $(window).height() + 2 * $('#messages li').last().outerHeight() >= $(document).height()) {
-    $("html, body").animate({ scrollTop: $(document).height() }, 0);
+    $('html, body').animate({ scrollTop: $(document).height() }, 0);
   }
 }
 
 /*** Gestion des événements ***/
 
 /**
- * Connexion d'un utilisateur
+ * Connexion de l'utilisateur
+ * Uniquement si le username n'est pas vide et n'existe pas encore
  */
 $('#login form').submit(function (e) {
   e.preventDefault();
@@ -24,9 +25,12 @@ $('#login form').submit(function (e) {
     username : $('#login input').val().trim()
   };
   if (user.username.length > 0) { // Si le champ de connexion n'est pas vide
-    socket.emit('user-login', user);
-    $('body').removeAttr('id'); // Cache formulaire de connexion
-    $('#chat input').focus(); // Focus sur le champ du message
+    socket.emit('user-login', user, function (success) {
+      if (success) {
+        $('body').removeAttr('id'); // Cache formulaire de connexion
+        $('#chat input').focus(); // Focus sur le champ du message
+      }
+    });
   }
 });
 
@@ -59,4 +63,22 @@ socket.on('chat-message', function (message) {
 socket.on('service-message', function (message) {
   $('#messages').append($('<li class="' + message.type + '">').html('<span class="info">information</span> ' + message.text));
   scrollToBottom();
+});
+
+/**
+ * Connection d'un nouvel utilisateur
+ */
+socket.on('user-login', function (user) {
+  $('#users').append($('<li class="' + user.username + ' new">').html(user.username));
+  setTimeout(function () {
+    $('#users li.new').removeClass('new');
+  }, 1000);
+});
+
+/**
+ * Déconnection d'un utilisateur
+ */
+socket.on('user-logout', function (user) {
+  var selector = '#users li.' + user.username;
+  $(selector).remove();
 });
