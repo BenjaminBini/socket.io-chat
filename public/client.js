@@ -1,6 +1,7 @@
 /*global io*/
 /*jslint browser: true*/
 var socket = io();
+var i;
 
 /*** Fonctions utiles ***/
 
@@ -69,7 +70,7 @@ socket.on('service-message', function (message) {
  * Connection d'un nouvel utilisateur
  */
 socket.on('user-login', function (user) {
-  $('#users').append($('<li class="' + user.username + ' new">').html(user.username));
+  $('#users').append($('<li class="' + user.username + ' new">').html(user.username + '<span class="typing">typing</span>'));
   setTimeout(function () {
     $('#users li.new').removeClass('new');
   }, 1000);
@@ -81,4 +82,40 @@ socket.on('user-login', function (user) {
 socket.on('user-logout', function (user) {
   var selector = '#users li.' + user.username;
   $(selector).remove();
+});
+
+/**
+ * Détection saisie utilisateur
+ */
+var typingTimer;
+var isTyping = false;
+
+$('#m').keydown(function () {
+  clearTimeout(typingTimer);
+  typingTimer = setTimeout(function () {
+    if (!isTyping) {
+      socket.emit('start-typing');
+      isTyping = true;
+    }
+  }, 0);
+});
+
+$('#m').keyup(function () {
+  clearTimeout(typingTimer);
+  typingTimer = setTimeout(function () {
+    if (isTyping) {
+      socket.emit('stop-typing');
+      isTyping = false;
+    }
+  }, 1000);
+});
+
+/**
+ * Gestion saisie des autres utilisateurs
+ */
+socket.on('update-typing', function (typingUsers) {
+  $('#users li span.typing').hide();
+  for (i = 0; i < typingUsers.length; i++) {
+    $('#users li.' + typingUsers[i].username + ' span.typing').show();
+  }
 });

@@ -10,7 +10,7 @@ var i;
 app.use('/', express.static(__dirname + '/public'));
 
 /**
- * List of connected users
+ * Liste des utilisateurs connectés
  */
 var users = [];
 
@@ -18,6 +18,11 @@ var users = [];
  * Historique des messages
  */
 var messages = [];
+
+/**
+ * Liste des utilisateurs en train de saisir un message
+ */
+var typingUsers = [];
 
 io.on('connection', function (socket) {
 
@@ -50,26 +55,30 @@ io.on('connection', function (socket) {
   }
 
   /**
-   * Déconnexion d'un utilisateur :
-   *  - suppression de la liste des connectés
-   *  - broadcast d'un 'service-message'
-   *  - ajout du message à l'historique
-   *  - broadcast d'un 'user-logout' contenant le user
+   * Déconnexion d'un utilisateur
    */
   socket.on('disconnect', function () {
     if (loggedUser !== undefined) {
-      console.log('user disconnected : ' + loggedUser.username);
+      // Broadcast d'un 'service-message'
       var serviceMessage = {
         text: 'User "' + loggedUser.username + '" disconnected',
         type: 'logout'
       };
+      socket.broadcast.emit('service-message', serviceMessage);
+      // Suppression de la liste des connectés
       var userIndex = users.indexOf(loggedUser);
       if (userIndex !== -1) {
         users.splice(userIndex, 1);
       }
-      socket.broadcast.emit('service-message', serviceMessage);
+      // Ajout du message à l'historique
       messages.push(serviceMessage);
+      // Emission d'un 'user-logout' contenant le user
       io.emit('user-logout', loggedUser);
+      // Si jamais il était en train de saisir un texte, on l'enlève de la liste
+      var typingUserIndex = typingUsers.indexOf(loggedUser);
+      if (typingUserIndex !== -1) {
+        typingUsers.splice(typingUserIndex, 1);
+      }
     }
   });
 
@@ -123,6 +132,30 @@ io.on('connection', function (socket) {
     if (messages.length > 150) {
       messages.splice(0, 1);
     }
+  });
+
+  /**
+   * Réception de l'événement 'start-typing'
+   * L'utilisateur commence à saisir son message
+   */
+  socket.on('start-typing', function () {
+    // Ajout du user à la liste des utilisateurs en cours de saisie
+    if (typingUsers.indexOf(loggedUser) === -1) {
+      typingUsers.push(loggedUser);
+    }
+    io.emit('update-typing', typingUsers);
+  });
+
+  /**
+   * Réception de l'événement 'stop-typing'
+   * L'utilisateur a arrêter de saisir son message
+   */
+  socket.on('stop-typing', function () {
+    var typingUserIndex = typingUsers.indexOf(loggedUser);
+    if (typingUserIndex !== -1) {
+      typingUsers.splice(typingUserIndex, 1);
+    }
+    io.emit('update-typing', typingUsers);
   });
 });
 
