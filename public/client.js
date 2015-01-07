@@ -90,7 +90,7 @@ socket.on('user-logout', function (user) {
 var typingTimer;
 var isTyping = false;
 
-$('#m').keydown(function () {
+$('#m').keypress(function () {
   clearTimeout(typingTimer);
   typingTimer = setTimeout(function () {
     if (!isTyping) {
