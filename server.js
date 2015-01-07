@@ -32,11 +32,6 @@ io.on('connection', function (socket) {
   var loggedUser;
 
   /**
-   * Log de connexion d'un utilisateur (avant login)
-   */
-  console.log('a user connected');
-
-  /**
    * Emission d'un événement "user-login" pour chaque utilisateur connecté
    */
   for (i = 0; i < users.length; i++) {
@@ -84,24 +79,20 @@ io.on('connection', function (socket) {
 
   /**
    * Connexion d'un utilisateur via le formulaire :
-   *  - sauvegarde du user
-   *  - ajout à la liste des connectés
-   *  - émission d'un 'service-message' pour rappeler le pseudo de l'utilisateur
-   *  - broadcast d'un 'service-message'
-   *  - ajout du message broadcasté à l'historique
-   *  - événement global contenant le user
-   *  - appel du callback
    */
   socket.on('user-login', function (user, callback) {
+    // Vérification que l'utilisateur n'existe pas
     var userIndex = -1;
     for (i = 0; i < users.length; i++) {
       if (users[i].username === user.username) {
         userIndex = i;
       }
     }
-    if (user !== undefined && userIndex === -1) {
+    if (user !== undefined && userIndex === -1) { // S'il est bien nouveau
+      // Sauvegarde de l'utilisateur et ajout à la liste des connectés
       loggedUser = user;
       users.push(loggedUser);
+      // Envoi et sauvegarde des messages de service
       var userServiceMessage = {
         text: 'You logged in as "' + loggedUser.username + '"',
         type: 'login'
@@ -113,6 +104,7 @@ io.on('connection', function (socket) {
       socket.emit('service-message', userServiceMessage);
       socket.broadcast.emit('service-message', broadcastedServiceMessage);
       messages.push(broadcastedServiceMessage);
+      // Emission de 'user-login' et appel du callback
       io.emit('user-login', loggedUser);
       callback(true);
     } else {
@@ -122,12 +114,12 @@ io.on('connection', function (socket) {
 
   /**
    * Réception de l'événement 'chat-message' et réémission vers tous les utilisateurs
-   * Ajout à la liste des messages et purge si nécessaire
    */
   socket.on('chat-message', function (message) {
+    // On ajoute le username au message et on émet l'événement
     message.username = loggedUser.username;
     io.emit('chat-message', message);
-    console.log('Message de : ' + loggedUser.username);
+    // Sauvegarde du message
     messages.push(message);
     if (messages.length > 150) {
       messages.splice(0, 1);
