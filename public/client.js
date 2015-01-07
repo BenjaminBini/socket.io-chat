@@ -92,12 +92,10 @@ var isTyping = false;
 
 $('#m').keypress(function () {
   clearTimeout(typingTimer);
-  typingTimer = setTimeout(function () {
-    if (!isTyping) {
-      socket.emit('start-typing');
-      isTyping = true;
-    }
-  }, 0);
+  if (!isTyping) {
+    socket.emit('start-typing');
+    isTyping = true;
+  }
 });
 
 $('#m').keyup(function () {
@@ -107,7 +105,7 @@ $('#m').keyup(function () {
       socket.emit('stop-typing');
       isTyping = false;
     }
-  }, 1000);
+  }, 500);
 });
 
 /**
