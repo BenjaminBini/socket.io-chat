@@ -67,7 +67,7 @@ socket.on('service-message', function (message) {
 });
 
 /**
- * Connection d'un nouvel utilisateur
+ * Connexion d'un nouvel utilisateur
  */
 socket.on('user-login', function (user) {
   $('#users').append($('<li class="' + user.username + ' new">').html(user.username + '<span class="typing">typing</span>'));
@@ -77,7 +77,7 @@ socket.on('user-login', function (user) {
 });
 
 /**
- * Déconnection d'un utilisateur
+ * Déconnexion d'un utilisateur
  */
 socket.on('user-logout', function (user) {
   var selector = '#users li.' + user.username;
