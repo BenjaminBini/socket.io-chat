@@ -13,5 +13,9 @@
     "public/bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "rivets": "~0.7.2",
+    "jquery": "~2.1.3"
+  }
 }
