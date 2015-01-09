@@ -9,7 +9,13 @@
   <body id="logged-out">
     <section id="chat">
       <ul id="messages">
+        <li rv-each-message="messages" rv-class="message.type">
+          <span class="label">
+            { message.label }
+          </span> { message.text }
+        </li>
       </ul><ul id="users">
+        <li rv-each-user="users" class="new" rv-id="user.username">{ user.username } <span class="typing" rv-show="user.typing">typing</span></li>
       </ul>
       <form action="">
         <input id="m" autocomplete="off" /><button>Send</button>
@@ -24,8 +30,10 @@
         </p>
       </form>
     </section>
-    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="components/rivets/dist/rivets.bundled.min.js"></script>
+    <script src="components/jquery/dist/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="utils.js"></script>
     <script src="client.js"></script>
   </body>
 </html>

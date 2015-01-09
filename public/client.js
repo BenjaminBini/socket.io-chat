@@ -1,18 +1,24 @@
-/*global io*/
+/*global io, rivets, utils*/
 /*jslint browser: true*/
 var socket = io();
-var i;
-
-/*** Fonctions utiles ***/
+var i, j;
 
 /**
- * Scroll vers le bas de page si l'utilisateur n'est pas remonté pour lire d'anciens messages
+ * Liste des messages
  */
-function scrollToBottom() {
-  if ($(window).scrollTop() + $(window).height() + 2 * $('#messages li').last().outerHeight() >= $(document).height()) {
-    $('html, body').animate({ scrollTop: $(document).height() }, 0);
-  }
-}
+var messages = [];
+
+/**
+ * Liste des utilisateurs
+ */
+var users = [];
+
+
+/*** DataBinding initial ***/
+
+rivets.bind($('#messages'), { messages : messages });
+rivets.bind($('#users'), { users : users });
+
 
 /*** Gestion des événements ***/
 
@@ -54,23 +60,25 @@ $('#chat form').submit(function (e) {
  * Réception d'un message
  */
 socket.on('chat-message', function (message) {
-  $('#messages').append($('<li>').html('<span class="username">' + message.username + '</span> ' + message.text));
-  scrollToBottom();
+  message.label = message.username;
+  messages.push(message);
+  utils.scrollToBottom();
 });
 
 /**
  * Réception d'un message de service
  */
 socket.on('service-message', function (message) {
-  $('#messages').append($('<li class="' + message.type + '">').html('<span class="info">information</span> ' + message.text));
-  scrollToBottom();
+  message.label = 'information';
+  messages.push(message);
+  utils.scrollToBottom();
 });
 
 /**
  * Connexion d'un nouvel utilisateur
  */
 socket.on('user-login', function (user) {
-  $('#users').append($('<li class="' + user.username + ' new">').html(user.username + '<span class="typing">typing</span>'));
+  users.push(user);
   setTimeout(function () {
     $('#users li.new').removeClass('new');
   }, 1000);
@@ -80,8 +88,10 @@ socket.on('user-login', function (user) {
  * Déconnexion d'un utilisateur
  */
 socket.on('user-logout', function (user) {
-  var selector = '#users li.' + user.username;
-  $(selector).remove();
+  var userIndex = users.indexOf(user);
+  if (userIndex !== -1) {
+    users.splice(userIndex, 1);
+  }
 });
 
 /**
@@ -112,8 +122,15 @@ $('#m').keyup(function () {
  * Gestion saisie des autres utilisateurs
  */
 socket.on('update-typing', function (typingUsers) {
-  $('#users li span.typing').hide();
+  for (i = 0; i < users.length; i++) {
+    users[i].typing = false;
+  }
   for (i = 0; i < typingUsers.length; i++) {
-    $('#users li.' + typingUsers[i].username + ' span.typing').show();
+    for (j = 0; j < users.length; j++) {
+      if (typingUsers[i].username === users[j].username) {
+        users[j].typing = true;
+        break;
+      }
+    }
   }
 });

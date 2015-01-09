@@ -42,7 +42,7 @@ io.on('connection', function (socket) {
    * Emission d'un événement "chat-message" pour chaque message de l'historique
    */
   for (i = 0; i < messages.length; i++) {
-    if (messages[i].username !== undefined) {
+    if (messages[i].type === 'chat-message') {
       socket.emit('chat-message', messages[i]);
     } else {
       socket.emit('service-message', messages[i]);
@@ -118,6 +118,8 @@ io.on('connection', function (socket) {
   socket.on('chat-message', function (message) {
     // On ajoute le username au message et on émet l'événement
     message.username = loggedUser.username;
+    // On assigne le type "message" à l'objet
+    message.type = 'chat-message';
     io.emit('chat-message', message);
     // Sauvegarde du message
     messages.push(message);

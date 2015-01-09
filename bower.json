@@ -1,0 +1,17 @@
+{
+  "name": "socket.io-chat",
+  "version": "0.0.1",
+  "homepage": "https://github.com/BenjaminBini/socket.io-chat",
+  "authors": [
+    "BenjaminBini <benjamin.bini@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "public/bower_components",
+    "test",
+    "tests"
+  ]
+}

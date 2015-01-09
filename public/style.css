@@ -70,7 +70,7 @@ section#chat #messages li.logout {
 section#chat #messages li.login {
 	background: #A8E5A6;
 }
-section#chat #messages li span.username {
+section#chat #messages li span.label {
 	display: inline-block;
 	padding: 6px 10px;
 	margin-right: 5px;
@@ -113,7 +113,6 @@ section#chat #users li span.typing {
     float: right;
     font-style: italic;
     color: #eee;
-    display: none;
 }
 section#login {
     transition: all 0.5s;
