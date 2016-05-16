@@ -22,6 +22,7 @@ Cette version ajoute les fonctionnalités suivantes par rapport à la version du
 Pour installer l'application, téléchargez les sources (zip ou git clone) et exécutez la commande suivante depuis la racine du projet.
 ```
 npm install
+bower install
 ```
 
 ## Démarrer l'application
